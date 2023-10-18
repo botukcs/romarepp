@@ -1,0 +1,9 @@
+# application.yml
+spring:
+  application:
+    name: template-app
+  datasource:
+    url: jdbc:postgresql://localhost:5432/theatr
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
