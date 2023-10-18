@@ -17,4 +17,8 @@ class ProductService {
     fun getAllProduct(): List<Product>{
         return productRepository.getAllProduct()
     }
+
+    fun getProductByName(name: String): Product{
+        return productRepository.getProductByName(name)
+    }
 }

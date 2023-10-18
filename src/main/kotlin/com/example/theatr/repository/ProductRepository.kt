@@ -7,4 +7,6 @@ import org.springframework.data.repository.CrudRepository
 interface ProductRepository: CrudRepository<Product, Long> {
     @Query("SELECT * FROM product")
     fun getAllProduct(): List<Product>
+
+    fun getProductByName(name: String): Product
 }

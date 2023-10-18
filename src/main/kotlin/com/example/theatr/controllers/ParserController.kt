@@ -39,6 +39,11 @@ class ParserController {
         return productService.getAllProduct()
     }
 
+    @GetMapping("/getProductByName")
+    fun getProductByName(name: String): Product {
+        return productService.getProductByName(name)
+    }
+
     @GetMapping("/getAllBanner")
     fun getAllPBanner(): List<Banner> {
         return bannerService.getAllBanner()
