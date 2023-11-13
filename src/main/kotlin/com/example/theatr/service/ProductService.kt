@@ -14,8 +14,8 @@ class ProductService {
         productRepository.save(product)
     }
 
-    fun getAllProduct(): List<Product>{
-        return productRepository.getAllProduct()
+    fun getAllProduct(firstId: Int): List<Product>{
+        return productRepository.getAllProduct(firstId)
     }
 
     fun getProductByName(name: String): Product{

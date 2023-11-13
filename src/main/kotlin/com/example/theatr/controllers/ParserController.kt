@@ -23,9 +23,6 @@ import java.io.File
 @RequestMapping("/parser")
 class ParserController {
     @Autowired
-    private lateinit var userService: UserService
-
-    @Autowired
     private lateinit var productService: ProductService
 
     @Autowired
@@ -35,29 +32,35 @@ class ParserController {
 
 
     @GetMapping("/getAllProducts")
-    fun getAllProducts(): List<Product> {
-        return productService.getAllProduct()
+    fun getAllProducts(firstId: Int): List<Product> {
+        log.info("/getAllProducts")
+        return productService.getAllProduct(firstId)
     }
 
     @GetMapping("/getProductByName")
     fun getProductByName(name: String): Product {
+        log.info("/getProductByName")
         return productService.getProductByName(name)
     }
 
     @GetMapping("/getAllBanner")
     fun getAllPBanner(): List<Banner> {
+        log.info("/getAllBanner")
         return bannerService.getAllBanner()
     }
 
     @GetMapping("/saveBanner")
     fun saveBanner(img: String, txt: String){
+        log.info("/saveBanner")
         bannerService.saveBanner(Banner(img, txt))
     }
 
 
     @GetMapping("/products")
     fun getProducts(): List<Product> {
-        val url = "https://skin.land/market/dota2/?hold=7%2C8&page="
+        log.info("/products")
+
+        val url = "https://skin.land/market/dota2/?hold=2%2C8&page="
         var doc: Document = Jsoup.connect(url).get()
 
         val pagesCountElements = doc.getElementsByClass("page-item").count() - 2
@@ -73,7 +76,8 @@ class ParserController {
                 val price = element.getElementsByClass("skin-card__skins-price").text()
                 val itemUrl = element.getElementsByClass("skin-card").attr("href")
                 val imageUrl = element.getElementsByAttribute("data-src").attr("data-src")
-                val product = Product(name, price, itemUrl, imageUrl)
+                val lotCount = element.getElementsByClass("skin-card__skins-count").text().filter { it.isDigit() }.toInt()
+                val product = Product(name, price, itemUrl, imageUrl, lotCount)
                 products.add(product)
                 productService.saveProduct(product)
             }
@@ -91,6 +95,8 @@ class ParserController {
 
     @GetMapping("/productDescription")
     fun productDescription(login: String, password: String, productUrl: String): Description {
+        log.info("/productDescription")
+
         val url = "productUrl"
         val doc: Document = Jsoup.connect(url).get()
 
@@ -108,13 +114,10 @@ class ParserController {
 
     }
 
-    @GetMapping("/user/registration")
-    fun showRegistrationForm(login: String, password: String) {
-        userService.regUser(login, password)
-    }
-
     @PostMapping("/single-file-upload")
     fun handleFileUploadUsingCurl(@RequestParam("file") file: MultipartFile): ResponseEntity<Any> {
+        log.info("single-file-upload")
+
         val map: Map<String, String> = HashMap()
 
         return ResponseEntity.ok<Any>(map)
