@@ -32,15 +32,15 @@ class ParserController {
 
 
     @GetMapping("/getAllProducts")
-    fun getAllProducts(firstId: Int): List<Product> {
+    fun getAllProducts(firstId: Int, fieldName: String, sortType: String): List<Product> {
         log.info("/getAllProducts")
-        return productService.getAllProduct(firstId)
+        return productService.getAllProduct(firstId, fieldName, sortType)
     }
 
-    @GetMapping("/getProductByName")
-    fun getProductByName(name: String): Product {
+    @GetMapping("/getProductById")
+    fun getProductByName(id: Int): Product {
         log.info("/getProductByName")
-        return productService.getProductByName(name)
+        return productService.getProductById(id)
     }
 
     @GetMapping("/getAllBanner")
@@ -94,10 +94,10 @@ class ParserController {
     }
 
     @GetMapping("/productDescription")
-    fun productDescription(login: String, password: String, productUrl: String): Description {
+    fun productDescription(id: String): Description {
         log.info("/productDescription")
-
-        val url = "productUrl"
+        val product = productService.getProductById(id.toInt())
+        val url = product.itemUrl
         val doc: Document = Jsoup.connect(url).get()
 
         val pagesElements = doc.getElementsByClass("skin-page__basic-data-cell")
@@ -121,6 +121,12 @@ class ParserController {
         val map: Map<String, String> = HashMap()
 
         return ResponseEntity.ok<Any>(map)
+    }
+
+    @GetMapping("/search")
+    fun searchProduct(name: String): List<Product> {
+        log.info("/search")
+        return productService.searchProductByName(name)
     }
 
 }

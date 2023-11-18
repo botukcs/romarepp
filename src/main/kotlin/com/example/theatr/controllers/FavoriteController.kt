@@ -1,6 +1,7 @@
 package com.example.theatr.controllers
 
 import com.example.theatr.entity.Favorite
+import com.example.theatr.entity.Product
 import com.example.theatr.service.FavoriteService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,9 +20,9 @@ class FavoriteController {
 
     @CrossOrigin(origins = ["http://localhost:3000"], allowCredentials = "true")
     @GetMapping("/getFavoriteByUserId")
-    fun getFavoriteByUserId(userId: Int): Favorite {
+    fun getFavoriteByUserId(userId: Int): List<Product> {
         log.info("/getFavoriteByUserId")
-        return favoriteService.getFavoriteByUserId(userId)
+        return favoriteService.getFavoriteByUser(userId)
     }
 
     @CrossOrigin(origins = ["http://localhost:3000"], allowCredentials = "true")

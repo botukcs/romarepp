@@ -5,8 +5,11 @@ import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
 
 interface ProductRepository: CrudRepository<Product, Long> {
-    @Query("SELECT * FROM product WHERE id BETWEEN (SELECT MIN(id) FROM product) and ((SELECT MIN(id) FROM product)+ :firstId)")
-    fun getAllProduct(firstId: Int): List<Product>
+    @Query("SELECT * FROM (SELECT * FROM product) a LIMIT :firstId")
+    fun getAllProduct(firstId: Int, fieldName: String, sortType: String): List<Product>
 
-    fun getProductByName(name: String): Product
+    @Query("SELECT * FROM product WHERE name LIKE concat('%', replace(replace(:name, '%', '\\\\%'), '_', '\\_'), '%')")
+    fun searchProductByName(name: String): List<Product>
+
+    fun getProductById(id: Int): Product
 }

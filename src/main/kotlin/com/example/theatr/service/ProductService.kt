@@ -14,11 +14,15 @@ class ProductService {
         productRepository.save(product)
     }
 
-    fun getAllProduct(firstId: Int): List<Product>{
-        return productRepository.getAllProduct(firstId)
+    fun getAllProduct(firstId: Int, fieldName: String, sortType: String): List<Product>{
+        return productRepository.getAllProduct(firstId, fieldName, sortType)
     }
 
-    fun getProductByName(name: String): Product{
-        return productRepository.getProductByName(name)
+    fun getProductById(id: Int): Product{
+        return productRepository.getProductById(id)
+    }
+
+    fun searchProductByName(name: String) : List<Product>{
+        return productRepository.searchProductByName(name)
     }
 }
